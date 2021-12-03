@@ -14,17 +14,34 @@ Notes:
 - You also DON'T need to add variables or functions you might've defined OUTSIDE of your components (e.g. if you create a new helper function in a separate file): Such functions or variables also are not created inside of a component function and hence changing them won't affect your components (components won't be re-evaluated if such variables or functions change and vice-versa)
 
 ```
-const [enteredEmail, setEnteredEmail] = useState('');
-const [emailIsValid, setEmailIsValid] = useState();
-const [enteredPassword, setEnteredPassword] = useState('');
-const [passwordIsValid, setPasswordIsValid] = useState();
-const [formIsValid, setFormIsValid] = useState(false);
-
-// setFormIsValid not included in dependencies because state updating functions never change in react.
-
-useEffect(() => {
-setFormIsValid(
-    enteredEmail.includes('@') && enteredPassword.trim().length > 6
-    );
-}, [enteredEmail, enteredPassword]);
+import { useEffect, useState } from 'react';
+ 
+let myTimer;
+ 
+const MyComponent = (props) => {
+  const [timerIsActive, setTimerIsActive] = useState(false);
+ 
+  const { timerDuration } = props; // using destructuring to pull out specific props values
+ 
+  useEffect(() => {
+    if (!timerIsActive) {
+      setTimerIsActive(true);
+      myTimer = setTimeout(() => {
+        setTimerIsActive(false);
+      }, timerDuration);
+    }
+  }, [timerIsActive, timerDuration]);
+};
 ```
+
+In this example,
+
+- timerIsActive is added as a dependency because it's component state that may change when the component changes (e.g. because the state was updated)
+
+- timerDuration is added as a dependency because it's a prop value of that component - so it may change if a parent component changes that value (causing this MyComponent component to re-render as well)
+
+- setTimerIsActive is NOT added as a dependency because it's that exception: State updating functions could be added but don't have to be added since React guarantees that the functions themselves never change
+
+- myTimer is NOT added as a dependency because it's not a component-internal variable (i.e. not some state or a prop value) - it's defined outside of the component and changing it (no matter where) wouldn't cause the component to be re-evaluated
+
+- setTimeout is NOT added as a dependency because it's a built-in API (built-into the browser) - it's independent from React and your components, it doesn't change
