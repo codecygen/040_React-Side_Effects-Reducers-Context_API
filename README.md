@@ -108,3 +108,6 @@ useEffect(() => {
     };
   }, [enteredEmail, enteredPassword]);
 ```
+
+# Reducers (useReducer)
+useState handles a state change in a component and re-renders it. Sometimes you have to have multiple effects which needs multiple useState functions. Due to that the code might get buggy. In these circumstances you need to use reducers. It is more powerful but ofcourse it comes with cons just like anything else. You need more setup to do.
