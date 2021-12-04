@@ -12,6 +12,16 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
+    console.log('EFFECT RUNNING');
+  
+    // Cleanup function
+    return () => {
+      console.log('EFFECT CLEANUP');
+    };
+
+  }, []);
+
+  useEffect(() => {
     // Debouncing in Javascript is an exercise to enhance browser performance 
     // during any time-consuming computations. 
     const identifier = setTimeout(() => {

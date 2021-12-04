@@ -1,8 +1,49 @@
+## useEffect Hook
 useEffect is used to handle side effects.
 
-Not setting any dependency causes useEffect to run every time the component renders.
+- Not setting any dependency causes useEffect to run every time the component renders.
 
-Setting the dependency to the empty array will cause useEffect to run only on the first time Rendering of the component.
+```
+useEffect(() => {
+  console.log('EFFECT RUNNING');
+});
+```
+
+- Setting the dependency to the empty array will cause useEffect to run only on the first time Rendering of the component.
+
+```
+useEffect(() => {
+  console.log('EFFECT RUNNING');
+}, []);
+```
+
+- Using cleanup function ensures that the cleanup function will run on every other call of the useEffect function. In the example down below, It will run "EFFECT RUNNING" when you reload page. The cleanup section runs the second time the useEffect function is called aka when you type 1 character to password field. Then the next console log will be like "EFFECT CLEANUP" and then "EFFECT RUNNING". It first returns the result of last function then runs the function second time.
+
+```
+useEffect(() => {
+  console.log('EFFECT RUNNING');
+  
+  // Cleanup function
+  return () => {
+    console.log('EFFECT CLEANUP');
+  };
+
+}, [enteredPassword]);
+```
+
+- Setting the dependency to an empty array for the example above will cause useEffect function to run only once. So you will see "EFFECT RUNNING" console log when the page loads. You will never see "EFFECT CLEANUP" console log until you remove the entire component this function written into. Lets say the useEffect function runs inside the Login.js component file. Once you login to a page and new page loads, this component gets removed from the DOM and that is when you will see the Cleanup function call thus "EFFECT CLEANUP" console log.
+
+```
+useEffect(() => {
+  console.log('EFFECT RUNNING');
+  
+  // Cleanup function
+  return () => {
+    console.log('EFFECT CLEANUP');
+  };
+
+}, []);
+```
 
 Setting dependencies means that check the dependencies (which are hook values in the example code down below) and only run useEffect function if any of these dependencies have changed.
 
@@ -45,3 +86,25 @@ In this example,
 - myTimer is NOT added as a dependency because it's not a component-internal variable (i.e. not some state or a prop value) - it's defined outside of the component and changing it (no matter where) wouldn't cause the component to be re-evaluated
 
 - setTimeout is NOT added as a dependency because it's a built-in API (built-into the browser) - it's independent from React and your components, it doesn't change
+
+## Debouncing
+Debouncing in Javascript is an exercise to enhance browser performance during any time-consuming computations.
+
+```
+useEffect(() => {
+    // Debouncing in Javascript is an exercise to enhance browser performance 
+    // during any time-consuming computations. 
+    const identifier = setTimeout(() => {
+      console.log('Checking form validity!');
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    // This is a cleanup function
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    };
+  }, [enteredEmail, enteredPassword]);
+```
