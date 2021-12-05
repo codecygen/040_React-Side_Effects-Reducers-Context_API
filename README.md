@@ -109,7 +109,7 @@ useEffect(() => {
   }, [enteredEmail, enteredPassword]);
 ```
 
-# Reducers (useReducer)
+## Reducers (useReducer)
 useState handles a state change in a component and re-renders it. Sometimes you have to have multiple effects which needs multiple useState functions. Due to that the code might get buggy. In these circumstances you need to use reducers. It is more powerful but ofcourse it comes with cons just like anything else. You need more setup to do.
 
 Action Object => Dispatch => Reducer => State
@@ -141,4 +141,120 @@ const passwordChangeHandler = (event) => {
     emailState.isValid && event.target.value.trim().length > 6
   );
 };
+```
+
+## Context API
+Instead of forwarding props back and forth, you can use Context API to wrap all components that needs a specific data.
+
+Imagine the hierarchy of the components like this:
+App.js > MainHeader.js > Navigation.js
+
+Imagine that the isLoggedIn state hook in App.js is needed in Navigation.js. In the traditional solution, you have to first forward the state to MainHeader.js then forward again to Navigation.js. As the app gets more complicated you will need more complex state forwarding and it might result in too many forwarding in between different components. In order to prevent it, we need to use Context API.
+
+Steps:
+- Create a folder /store/auth-context.js and the context of the file will be like this:
+
+```
+import React from 'react';
+
+const AuthContext = React.createContext();
+
+export default AuthContext;
+```
+
+- Go to App.js and wrap every component in the return section of the function like this. As you can see in the snipped down below, forwarding "isLoggedIn" state removed from the MainHeader component via props.
+
+```
+// Codes removed for convenience
+// Codes removed for convenience
+// Codes removed for convenience
+
+import AuthContext from './store/auth-context';
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Codes removed for convenience
+  // Codes removed for convenience
+  // Codes removed for convenience
+  
+  return (
+    <AuthContext.Provider 
+      value={{
+        isLoggedIn: isLoggedIn
+      }}
+    >
+      <MainHeader onLogout={logoutHandler} />
+      <main>
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {isLoggedIn && <Home onLogout={logoutHandler} />}
+      </main>
+    </AuthContext.Provider>
+  );
+}
+```
+
+- Finally edit Navigation.js as given,
+
+```
+import React from 'react';
+
+import classes from './Navigation.module.css';
+import AuthContext from '../../store/auth-context';
+
+const Navigation = (props) => {
+  return (
+    <AuthContext.Consumer>
+      {(ctx) => {
+        return (
+          <nav className={classes.nav}>
+            <ul>
+              {ctx.isLoggedIn && (
+                <li>
+                  <a href="/">Users</a>
+                </li>
+              )}
+              {ctx.isLoggedIn && (
+                <li>
+                  <a href="/">Admin</a>
+                </li>
+              )}
+              {ctx.isLoggedIn && (
+                <li>
+                  <button onClick={props.onLogout}>Logout</button>
+                </li>
+              )}
+            </ul>
+          </nav>
+        );
+      }}
+    </AuthContext.Consumer>
+  );
+
+
+  // return (
+  //   <nav className={classes.nav}>
+  //     <ul>
+  //       {props.isLoggedIn && (
+  //         <li>
+  //           <a href="/">Users</a>
+  //         </li>
+  //       )}
+  //       {props.isLoggedIn && (
+  //         <li>
+  //           <a href="/">Admin</a>
+  //         </li>
+  //       )}
+  //       {props.isLoggedIn && (
+  //         <li>
+  //           <button onClick={props.onLogout}>Logout</button>
+  //         </li>
+  //       )}
+  //     </ul>
+  //   </nav>
+  // );
+};
+
+export default Navigation;
+
 ```
