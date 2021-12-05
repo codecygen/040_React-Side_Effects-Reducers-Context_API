@@ -263,13 +263,10 @@ export default Navigation;
 
 ### Method 2:
 
-In this method, instead of wrapping everyhing inside <AuthContext.Consumer> in Navigation.js, simply use it like this:
+In this method, instead of wrapping everyhing inside <AuthContext.Consumer> in Navigation.js, we can import useContext from React and simply use it like this:
 
 ```
-// Codes removed for convenience
-// Codes removed for convenience
-// Codes removed for convenience
-
+import React, { useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 
 const Navigation = (props) => {
