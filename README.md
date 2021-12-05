@@ -146,7 +146,7 @@ const passwordChangeHandler = (event) => {
 ## Context API
 Instead of forwarding props back and forth, you can use Context API to wrap all components that needs a specific data.
 
-Imagine the hierarchy of the components like this:
+Imagine the hierarchy of the components like this:  
 App.js > MainHeader.js > Navigation.js
 
 Imagine that the isLoggedIn state hook in App.js is needed in Navigation.js. In the traditional solution, you have to first forward the state to MainHeader.js then forward again to Navigation.js. As the app gets more complicated you will need more complex state forwarding and it might result in too many forwarding in between different components. In order to prevent it, we need to use Context API.
