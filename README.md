@@ -151,6 +151,8 @@ App.js > MainHeader.js > Navigation.js
 
 Imagine that the isLoggedIn state hook in App.js is needed in Navigation.js. In the traditional solution, you have to first forward the state to MainHeader.js then forward again to Navigation.js. As the app gets more complicated you will need more complex state forwarding and it might result in too many forwarding in between different components. In order to prevent it, we need to use Context API.
 
+### Method 1:
+
 Steps:
 - Create a folder /store/auth-context.js and the context of the file will be like this:
 
@@ -253,6 +255,47 @@ const Navigation = (props) => {
   //     </ul>
   //   </nav>
   // );
+};
+
+export default Navigation;
+
+```
+
+### Method 2:
+
+In this method, instead of wrapping everyhing inside <AuthContext.Consumer> in Navigation.js, simply use it like this:
+
+```
+// Codes removed for convenience
+// Codes removed for convenience
+// Codes removed for convenience
+
+import AuthContext from '../../store/auth-context';
+
+const Navigation = (props) => {
+  const ctx = useContext(AuthContext);
+
+  return (
+    <nav className={classes.nav}>
+      <ul>
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Users</a>
+          </li>
+        )}
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Admin</a>
+          </li>
+        )}
+        {ctx.isLoggedIn && (
+          <li>
+            <button onClick={props.onLogout}>Logout</button>
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
 };
 
 export default Navigation;
