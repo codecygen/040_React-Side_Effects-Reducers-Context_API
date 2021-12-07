@@ -8,7 +8,7 @@ useEffect is used to handle side effects.
 
 - Not setting any dependency causes useEffect to run every time the component renders.
 
-```
+```react
 useEffect(() => {
   console.log('EFFECT RUNNING');
 });
