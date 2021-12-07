@@ -159,7 +159,12 @@ Steps:
 ```
 import React from 'react';
 
-const AuthContext = React.createContext();
+const AuthContext = React.createContext({
+    // We add these dummy props so that
+    // other files will have autocomplete suggestion
+    isLoggedIn: false,
+    onLogout: () => {}
+});
 
 export default AuthContext;
 ```
