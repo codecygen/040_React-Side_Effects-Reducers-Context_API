@@ -4,15 +4,15 @@ import classes from './Input.module.css';
 const Input = (props) => {
 
     const inputRef = useRef();
-        inputRef.current.focus();
-    useEffect(() => {
 
+    useEffect(() => {
+        inputRef.current.focus();
     }, []);
 
     return (
         <div
             className={`${classes.control} ${props.isValid === false ? classes.invalid : ''
-            }`}
+                }`}
         >
             <label htmlFor={props.id}>{props.label}</label>
             <input
