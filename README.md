@@ -151,7 +151,7 @@ App.js > MainHeader.js > Navigation.js
 
 Imagine that the isLoggedIn state hook in App.js is needed in Navigation.js. In the traditional solution, you have to first forward the state to MainHeader.js then forward again to Navigation.js. As the app gets more complicated you will need more complex state forwarding and it might result in too many forwarding in between different components. In order to prevent it, we need to use Context API.
 
-### Method 1:
+### Method 1 - Wrapping in an <AuthContext.Consumer> Wrapper:
 
 Steps:
 - Create a folder /store/auth-context.js and the context of the file will be like this:
@@ -266,7 +266,7 @@ export default Navigation;
 
 ```
 
-### Method 2:
+### Method 2 - Assigning a ctx Value instead of Wrapping:
 
 In this method, instead of wrapping everyhing inside <AuthContext.Consumer> in Navigation.js, we can import useContext from React and simply use it like this:
 
@@ -302,4 +302,103 @@ const Navigation = (props) => {
 
 export default Navigation;
 
+```
+
+### Method 3 - Centralizing Context API:
+In this method, we centralize everything like this:
+
+```
+// auth-context.js
+
+import React, { useState, useEffect } from 'react';
+
+const AuthContext = React.createContext({
+    // We add these dummy props so that
+    // other files will have autocomplete suggestion
+    isLoggedIn: false,
+    onLogin: (email, password) => {},
+    onLogout: () => {}
+});
+
+export const AuthContextProvider = (props) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+    
+        if (storedUserLoggedInInformation === '1') {
+          setIsLoggedIn(true);
+        }
+    }, []);
+
+    const logoutHandler = () => {
+        localStorage.removeItem('isLoggedIn');
+        setIsLoggedIn(false);
+    };
+
+    const loginHandler = () => {
+        localStorage.setItem('isLoggedIn', '1');
+        setIsLoggedIn(true);
+    };
+
+    return (
+        <AuthContext.Provider
+            value={{
+                isLoggedIn: isLoggedIn,
+                onLogin: loginHandler,
+                onLogout: logoutHandler
+            }}
+        >
+            {props.children}
+        </AuthContext.Provider>
+    );
+}
+
+export default AuthContext;
+```
+
+Then in index.js
+
+```
+index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { AuthContextProvider } from './store/auth-context';
+
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+    <AuthContextProvider>
+        <App />
+    </AuthContextProvider>, 
+    document.getElementById('root')
+);
+```
+
+Then in any file we need, for example in Home.js it will be like this:
+
+```
+Home.js
+
+import React, { useContext } from 'react';
+
+import Card from '../UI/Card/Card';
+import Button from '../UI/Button/Button';
+import classes from './Home.module.css';
+import AuthContext from '../../store/auth-context';
+
+const Home = (props) => {
+  const authCtx = useContext(AuthContext);
+
+  return (
+    <Card className={classes.home}>
+      <h1>Welcome back!</h1>
+      <Button onClick={authCtx.onLogout}>Logout</Button>
+    </Card>
+  );
+};
+
+export default Home;
 ```
