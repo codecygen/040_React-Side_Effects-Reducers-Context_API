@@ -1,3 +1,8 @@
+# Rules of React Hooks
+- Only call React Hooks in React Functions. (React Component Functions or Custom Hooks)
+- Only call React Hooks at the top level. (Don't call them in nested functions or block statements)
+- Unofficial Rule: Always add everything you refer to inside of useEffect() as a dependency.
+
 ## useEffect Hook
 useEffect is used to handle side effects.
 
