@@ -8,15 +8,15 @@ useEffect is used to handle side effects.
 
 - Not setting any dependency causes useEffect to run every time the component renders.
 
-```
+```javascript
 useEffect(() => {
-  **console.log('EFFECT RUNNING');**
+  console.log('EFFECT RUNNING');
 });
 ```
 
 - Setting the dependency to the empty array will cause useEffect to run only on the first time Rendering of the component.
 
-```
+```javascript
 useEffect(() => {
   console.log('EFFECT RUNNING');
 }, []);
@@ -24,7 +24,7 @@ useEffect(() => {
 
 - Using cleanup function ensures that the cleanup function will run on every other call of the useEffect function. In the example down below, It will run "EFFECT RUNNING" when you reload page. The cleanup section runs the second time the useEffect function is called aka when you type 1 character to password field. Then the next console log will be like "EFFECT CLEANUP" and then "EFFECT RUNNING". It first returns the result of last function then runs the function second time.
 
-```
+```javascript
 useEffect(() => {
   console.log('EFFECT RUNNING');
   
@@ -38,7 +38,7 @@ useEffect(() => {
 
 - Setting the dependency to an empty array for the example above will cause useEffect function to run only once. So you will see "EFFECT RUNNING" console log when the page loads. You will never see "EFFECT CLEANUP" console log until you remove the entire component this function written into. Lets say the useEffect function runs inside the Login.js component file. Once you login to a page and new page loads, this component gets removed from the DOM and that is when you will see the Cleanup function call thus "EFFECT CLEANUP" console log.
 
-```
+```javascript
 useEffect(() => {
   console.log('EFFECT RUNNING');
   
@@ -59,7 +59,7 @@ Notes:
 
 - You also DON'T need to add variables or functions you might've defined OUTSIDE of your components (e.g. if you create a new helper function in a separate file): Such functions or variables also are not created inside of a component function and hence changing them won't affect your components (components won't be re-evaluated if such variables or functions change and vice-versa)
 
-```
+```javascript
 import { useEffect, useState } from 'react';
  
 let myTimer;
@@ -95,7 +95,7 @@ In this example,
 ## Debouncing
 Debouncing in Javascript is an exercise to enhance browser performance during any time-consuming computations.
 
-```
+```javascript
 useEffect(() => {
     // Debouncing in Javascript is an exercise to enhance browser performance 
     // during any time-consuming computations. 
@@ -121,7 +121,7 @@ Action Object => Dispatch => Reducer => State
 
 const [state, dispatch] = useReducer(reducer, initialState);
 
-```
+```javascript
 const passwordReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.val, isValid: action.val.trim().length > 6 };
@@ -161,7 +161,7 @@ Imagine that the isLoggedIn state hook in App.js is needed in Navigation.js. In 
 Steps:
 - Create a folder /store/auth-context.js and the context of the file will be like this:
 
-```
+```javascript
 import React from 'react';
 
 const AuthContext = React.createContext({
@@ -176,7 +176,7 @@ export default AuthContext;
 
 - Go to App.js and wrap every component in the return section of the function like this. As you can see in the snipped down below, forwarding "isLoggedIn" state removed from the MainHeader component via props.
 
-```
+```javascript
 // Codes removed for convenience
 // Codes removed for convenience
 // Codes removed for convenience
@@ -208,7 +208,7 @@ function App() {
 
 - Finally edit Navigation.js as given,
 
-```
+```javascript
 import React from 'react';
 
 import classes from './Navigation.module.css';
@@ -275,7 +275,7 @@ export default Navigation;
 
 In this method, instead of wrapping everyhing inside <AuthContext.Consumer> in Navigation.js, we can import useContext from React and simply use it like this:
 
-```
+```javascript
 import React, { useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 
@@ -312,7 +312,7 @@ export default Navigation;
 ### Method 3 - Centralizing Context API:
 In this method, we centralize everything like this:
 
-```
+```javascript
 // auth-context.js
 
 import React, { useState, useEffect } from 'react';
@@ -364,7 +364,7 @@ export default AuthContext;
 
 Then in index.js
 
-```
+```javascript
 index.js
 
 import React from 'react';
@@ -384,7 +384,7 @@ ReactDOM.render(
 
 Then in any file we need, for example in Home.js it will be like this:
 
-```
+```javascript
 Home.js
 
 import React, { useContext } from 'react';
