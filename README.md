@@ -402,3 +402,10 @@ const Home = (props) => {
 
 export default Home;
 ```
+
+NOTE: 
+- Use Context for state management and props for configuration. For instance, if you want to pass only states, use Context, but if you want to use arguments to control the button type (submit, logout etc.), use props.
+
+- React Context is NOT optimized for high frequency changes. If there are multiple changes per second, then React Context is not built for that.
+
+- React Context should not be used to replace ALL component communications and props. You should still use props and props chains that might not need any replacement.
