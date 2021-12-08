@@ -1,4 +1,18 @@
+# React Basics (036_React-Basics)
+[036_React-Basics](https://github.com/codecygen/036_React-Basics)
+
+- Components
+- CSS styling
+- Properties (props)
+- Events (useState)
+- Components as Element Wrappers
+- Lifting the State up to Parent Component
+- Conditional Rendering
+- Dynamic Styles (Eg: <div className="chart-bar__fill" style={{'height': barFillHeight}}>)
+
+
 # Component Styling (037_React-Component_Styling)
+[037_React-Component_Styling](https://github.com/codecygen/037_React-Component_Styling)
 
 Checking if the entered String is all whitespace.
 
@@ -394,6 +408,7 @@ export default Button;
 
 
 # Fragments, Portals, Refs (039_React-Fragments-Portals-Refs)
+[039_React-Fragments-Portals-Refs](https://github.com/codecygen/039_React-Fragments-Portals-Refs)
 
 ## Fragments
 Fragments is used just to put return elements together. Instead of using <div></div> you put them inside the brackets of <React.Fragment></React.Fragment> or simply <></>. This will wrap all elements but it will not add an extra layer of div element which is useful to avoid div soup inside the code that is created by React.
@@ -574,6 +589,8 @@ export default AddUser;
 
 
 # Rules of React Hooks (040_React-Side_Effects-Reducers-Context_API)
+[040_React-Side_Effects-Reducers-Context_API](https://github.com/codecygen/040_React-Side_Effects-Reducers-Context_API)
+
 - Only call React Hooks in React Functions. (React Component Functions or Custom Hooks)
 - Only call React Hooks at the top level. (Don't call them in nested functions or block statements)
 - Unofficial Rule: Always add everything you refer to inside of useEffect() as a dependency.
