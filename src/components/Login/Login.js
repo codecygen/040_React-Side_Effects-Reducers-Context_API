@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react';
+import React, { useState, useEffect, useReducer, useContext, useRef } from 'react';
 
 import Card from '../UI/Card/Card';
 import Input from '../UI/Input/Input';
@@ -50,6 +50,9 @@ const Login = (props) => {
   });
 
   const authCtx = useContext(AuthContext);
+
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
 
   // useEffect(() => {
   //   console.log('EFFECT RUNNING');
@@ -109,9 +112,9 @@ const Login = (props) => {
     if (formIsValid) {
       authCtx.onLogin(emailState.value, passwordState.value);
     } else if (!emailIsValid) {
-
+      emailInputRef.current.focus();
     } else {
-      
+      passwordInputRef.current.focus();
     }
   };
 
@@ -120,6 +123,7 @@ const Login = (props) => {
       <form onSubmit={submitHandler}>
 
         <Input
+          ref={emailInputRef}
           id="email"
           label="E-mail"
           type="email"
@@ -130,6 +134,7 @@ const Login = (props) => {
         />
 
         <Input
+          ref={passwordInputRef}
           id="password"
           label="Password"
           type="password"
