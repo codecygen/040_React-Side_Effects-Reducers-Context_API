@@ -722,12 +722,15 @@ const [state, dispatch] = useReducer(reducer, initialState);
 ```javascript
 // Login.js in 040_React-Side_Effects-Reducers-Context_API
 
+// state keeps previous state's snapshot
+// action is the action you dispatch in your code
 const passwordReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.val, isValid: action.val.trim().length > 6 };
   }
 
   if (action.type === 'INPUT_BLUR') {
+    // This literally returns previous state's values.
     return { value: state.value, isValid: state.value.trim().length > 6 };
   }
 
@@ -740,13 +743,20 @@ const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
 });
 
 const passwordChangeHandler = (event) => {
+  // This is sending info into passwordReducer. "USER_INPUT" is a totally made up name.
+  // It is only given to match it in the passwordReducer section so that passwordReducer will know
+  // what action to take to return values for passwordState.value and passwordState.isValid
   dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
 
   setFormIsValid(
     emailState.isValid && event.target.value.trim().length > 6
   );
 };
+
+// passwordState.value, passwordState.isValid will give the current values of the state.
 ```
+
+Click [here](https://github.com/codecygen/040_React-Side_Effects-Reducers-Context_API/blob/c4de41856f1416ca03dd43cc6155d97ebebbc27c/src/components/Login/Login.js) for full code.
 
 ## Context API
 Instead of forwarding props back and forth, you can use Context API to wrap all components that needs a specific data.
